@@ -1,0 +1,36 @@
+
+bool isCycleDFS(vector<int> adj[], int u, vector<bool>& visited, vector<bool>& inRecursion) {
+        visited[u] = true;
+        //vertex in recursion
+        inRecursion[u] = true;
+
+
+        for(int &v : adj[u]) {
+            //if not visited, then we check for cycle in DFS
+            if(visited[v] == false && isCycleDFS(adj, v, visited, inRecursion))
+                return true;
+            //if visited we need to check if it was visted by another dfs call or this particular dfs call
+            else if(inRecursion[v] == true)
+                return true;
+        }
+
+        //vertex removed from recursion
+        inRecursion[u] = false;
+        return false;
+
+    }
+
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int V, vector<int> adj[]) {
+
+        vector<bool> visited(V, false);
+        //in case of dg we have to maintain that the veretx is currently in the recursion stack(that particular dfs call) or not.
+        vector<bool> inRecursion(V, false);
+
+        for(int i = 0; i<V; i++) {
+            if(!visited[i] && isCycleDFS(adj, i, visited, inRecursion))
+                return true;
+        }
+
+        return false;
+    }
